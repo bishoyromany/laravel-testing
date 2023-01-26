@@ -6,6 +6,13 @@
     </x-slot>
 
     <div class="py-12 flex justify-center text-white">
+        @if (auth()->user()->is_admin)
+            <a href="{{route('products.create')}}">
+                Add new product
+            </a>
+        @endif
+
+
         <table>
             <thead>
                 <tr>
