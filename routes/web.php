@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('is_admin')->group(function(){
         Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
-        Route::get('products/store', [ProductController::class, 'create'])->name('products.store');
+        Route::post('products', [ProductController::class, 'store'])->name('products.store');
     });
 });
 
