@@ -12,6 +12,15 @@ class ProductsTest extends TestCase
 {
     use RefreshDatabase;
 
+    private User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+    }
+
     /**
      * A basic feature test example.
      *
@@ -19,8 +28,7 @@ class ProductsTest extends TestCase
      */
     public function test_products_homepage_have_no_data()
     {
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->get('/products');
+        $response = $this->actingAs($this->user)->get('/products');
 
         $response->assertStatus(200);
         $response->assertSee(__("Mo Products Found"));
@@ -38,8 +46,7 @@ class ProductsTest extends TestCase
             'price' => 1.5
         ]);
 
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->get('/products');
+        $response = $this->actingAs($this->user)->get('/products');
 
         $response->assertStatus(200);
         $response->assertSee($product->title);
@@ -53,8 +60,7 @@ class ProductsTest extends TestCase
         $products = Product::factory(11)->create();
         $lastProduct = $products->last();
 
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->get('/products');
+        $response = $this->actingAs($this->user)->get('/products');
 
         $response->assertStatus(200);
 
