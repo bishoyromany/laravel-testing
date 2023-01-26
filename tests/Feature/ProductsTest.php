@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
 
 class ProductsTest extends TestCase
 {
@@ -18,7 +19,8 @@ class ProductsTest extends TestCase
      */
     public function test_products_homepage_have_no_data()
     {
-        $response = $this->get('/products');
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get('/products');
 
         $response->assertStatus(200);
         $response->assertSee(__("Mo Products Found"));
@@ -36,7 +38,8 @@ class ProductsTest extends TestCase
             'price' => 1.5
         ]);
 
-        $response = $this->get('/products');
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get('/products');
 
         $response->assertStatus(200);
         $response->assertSee($product->title);
@@ -50,7 +53,8 @@ class ProductsTest extends TestCase
         $products = Product::factory(11)->create();
         $lastProduct = $products->last();
 
-        $response = $this->get('/products');
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get('/products');
 
         $response->assertStatus(200);
 
