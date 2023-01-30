@@ -36,6 +36,11 @@
                         </td>
                         <td>
                             <a href="{{route('products.edit', $product)}}">Edit</a>
+                            <form method="POST" action="{{route('products.destroy', $product)}}">
+                                @csrf
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button>Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @empty

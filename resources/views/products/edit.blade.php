@@ -9,6 +9,8 @@
         <form method="POST" action="{{route('products.update', $product)}}">
             @csrf
 
+            <input name="_method" type="hidden" value="PUT">
+
             {{-- Title --}}
             <div>
                 <label for="title">{{__('Title')}}</label>

@@ -115,4 +115,50 @@ class ProductsTest extends TestCase
         $this->assertEquals($product['title'], $lastProduct->title);
         $this->assertEquals($product['price'], $lastProduct->price);
     }
+
+    public function test_update_product_validation_error_redirects_back_to_form(){
+        $product = Product::factory()->create();
+
+        $response = $this->actingAs($this->admin)->put(route('products.update', $product), [
+            'title' => '',
+            'price' => ''
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors(['title', 'price']);
+        $response->assertInvalid(['title', 'price']);
+    }
+
+    public function test_update_product_successfully(){
+        $product = Product::factory()->create();
+        $updateProduct = [
+            'title' => 'Update 1',
+            'price' => 123,
+            'id' => $product->id
+        ];
+
+        $response = $this->actingAs($this->admin)->put(route('products.update', $product), $updateProduct);
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('products.index'));
+        $lastProduct = Product::latest()->first();
+
+        $this->assertEquals($updateProduct['id'], $lastProduct->id);
+        $this->assertEquals($updateProduct['title'], $lastProduct->title);
+        $this->assertEquals($updateProduct['price'], $lastProduct->price);
+    }
+
+    public function test_delete_product_successfully(){
+        $product = Product::factory()->create();
+
+        $response = $this->actingAs($this->admin)->delete(route('products.destroy', $product));
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('products.index'));
+
+        $this->assertDatabaseMissing('products', [$product]);
+
+        $lastProduct = Product::latest()->first();
+        $this->assertNotEquals($product->id, $lastProduct->id ?? 0);
+    }
 }
