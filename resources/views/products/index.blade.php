@@ -19,6 +19,7 @@
                     <th>Title</th>
                     <th>Price</th>
                     <th>Price EUR</th>
+                    <th>Edit</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +33,9 @@
                         </td>
                         <td>
                             {{ $product->price_eur }}
+                        </td>
+                        <td>
+                            <a href="{{route('products.edit', $product)}}">Edit</a>
                         </td>
                     </tr>
                 @empty
